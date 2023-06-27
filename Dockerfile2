@@ -1,0 +1,44 @@
+FROM python:3.11-alpine AS builder
+
+ENV PYTHONUNBUFFERED=1 \
+    # prevents python creating .pyc files
+    PYTHONDONTWRITEBYTECODE=1 \
+    # pip
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+     # poetry
+    POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_CREATE=false \
+    POETRY_VIRTUALENVS_IN_PROJECT=true \
+    POETRY_HOME="/opt/poetry" \
+    POETRY_VERSION=1.5.1
+
+ENV PATH="$POETRY_HOME/bin:$PATH"
+WORKDIR /build
+
+RUN pip install --ignore-installed 'poetry==$POETRY_VERSION'
+
+COPY poetry.lock pyproject.toml  ./
+
+RUN poetry config virtualenvs.create false
+RUN poetry install --no-ansi --no-interaction --without dev
+RUN poetry export \
+    --without-hashes \
+    -f requirements.txt \
+    --output requirements.txt \
+    --only main
+
+RUN pip install --prefix /local --no-cache-dir pip && \
+    pip install --prefix /local -I --no-cache-dir -r requirements.txt
+
+
+FROM python:3.11-alpine
+ENV PYTHONUNBUFFERED=1
+RUN apk update && apk add just tzdata
+RUN cp /usr/share/zoneinfo/UTC /etc/localtime
+RUN adduser --home /app --disabled-password app
+COPY --from=builder /local/ /usr/local
+COPY --chown=app:app . /app
+USER app
+WORKDIR /app
