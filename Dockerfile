@@ -20,9 +20,7 @@ ENV PIP_NO_CACHE_DIR=off \
     POETRY_HOME="/opt/poetry" \
     POETRY_VERSION=1.5.1
 RUN pip install poetry==1.5.1
-#RUN poetry config virtualenvs.in-project true
 COPY pyproject.toml poetry.lock /app/
-#RUN touch README.md
 RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --without dev --no-interaction --no-ansi --no-root
 
 
