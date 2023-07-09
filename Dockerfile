@@ -37,4 +37,4 @@ COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 COPY ./src /app
 WORKDIR /app
 
-CMD ["uvicorn", "python_project_skeleton.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "python_project_skeleton.main:app", "--host", "0.0.0.0", "--port", "8000"]
