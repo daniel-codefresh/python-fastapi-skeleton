@@ -16,11 +16,10 @@ class RouteErrorHandler(APIRoute):
         async def custom_route_handler(request: Request) -> Response:
             try:
                 return await original_route_handler(request)
-            except Exception as ex:
-                if isinstance(ex, HTTPException):
-                    raise ex
-                logger.exception("uncaught error")
-                # wrap error into pretty 500 exception
+            except Exception as exc:
+                if isinstance(exc, HTTPException):
+                    raise exc
+                logger.exception(exc)
                 raise HTTPException(
                     status_code=500, detail="An unexpected error occurred."
                 )

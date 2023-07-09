@@ -9,10 +9,12 @@ from fastapi import Request
 CORRELATION_ID_CTX_KEY: str = "correlation_id"
 REQUEST_ID_CTX_KEY: str = "request_id"
 
-_correlation_id_ctx_var: ContextVar[str] = ContextVar(
+_correlation_id_ctx_var: ContextVar[str | None] = ContextVar(
     CORRELATION_ID_CTX_KEY, default=None
 )
-_request_id_ctx_var: ContextVar[str] = ContextVar(REQUEST_ID_CTX_KEY, default=None)
+_request_id_ctx_var: ContextVar[str | None] = ContextVar(
+    REQUEST_ID_CTX_KEY, default=None
+)
 
 
 def get_correlation_id() -> str:
@@ -30,7 +32,6 @@ class RequestCorrelationLogMiddleware(BaseHTTPMiddleware):
         )
         request_id = _request_id_ctx_var.set(str(uuid4()))
 
-        # response = None
         with logger.contextualize(
             request_id=get_request_id(), correlation_id=get_correlation_id()
         ):
@@ -39,10 +40,6 @@ class RequestCorrelationLogMiddleware(BaseHTTPMiddleware):
                 response.headers["X-Correlation-ID"] = get_correlation_id()
                 response.headers["X-Request-ID"] = get_request_id()
                 return response
-            # except Exception:
-            #     response = Response(...)
-            #     logger.error("Request failed")
             finally:
                 _correlation_id_ctx_var.reset(correlation_id)
                 _request_id_ctx_var.reset(request_id)
-                # return response

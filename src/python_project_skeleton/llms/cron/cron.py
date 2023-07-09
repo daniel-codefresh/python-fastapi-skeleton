@@ -1,17 +1,10 @@
 from langchain.prompts import PromptTemplate
-from langchain.llms import BaseLLM, OpenAI
-from ...config import settings
-from typing import Optional
+from langchain.llms import BaseLLM
 
 
 class CronExpressionGenerator:
-    def __init__(self, llm: Optional[BaseLLM] = None):
-        self.llm = llm or OpenAI(
-            openai_api_key=settings.openai_api_key,
-            temperature=0.0,
-            max_tokens=150,
-            model_name="text-davinci-003",
-        )
+    def __init__(self, llm: BaseLLM):
+        self.llm = llm
 
         self.prompt = PromptTemplate(
             input_variables=["cron_prompt"],
