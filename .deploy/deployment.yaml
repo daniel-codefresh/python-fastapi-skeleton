@@ -1,19 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: example-api
+  name: fastapi-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: example-api
+      app: fastapi-app
   template:
     metadata:
       labels:
-        app: example-api
+        app: fastapi-app
     spec:
       containers:
-        - name: example-api
-          image: example-api:0.0.1
+        - name: fastapi-app
+          image: quay.io/danisoi/fastapi-test:0.0.1
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: fastapi-app
+                  key: openai-api-key
           ports:
             - containerPort: 8000
