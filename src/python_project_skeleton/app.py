@@ -7,13 +7,13 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse, RedirectResponse
 
-from python_project_skeleton.api.routes import router as api_router
-from python_project_skeleton.config import Settings
-from python_project_skeleton.helpers.helpers import fetch_message400, fetch_message500
-from python_project_skeleton.middleware.correlation_id import (
+from .api.routes import router as api_router
+from .config import Settings
+from .helpers.helpers import fetch_message400, fetch_message500
+from .middleware.correlation_id import (
     RequestCorrelationLogMiddleware,
 )
-from python_project_skeleton.route_error_handler import RouteErrorHandler
+from .helpers.route_error_handler import RouteErrorHandler
 
 
 def get_app(settings: Settings) -> FastAPI:
