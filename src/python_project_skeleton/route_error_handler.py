@@ -8,7 +8,12 @@ from starlette.responses import Response
 
 
 class RouteErrorHandler(APIRoute):
-    """Custom APIRoute that handles application errors and exceptions"""
+    """
+    Custom APIRoute that handles application errors and exceptions.
+    This is a wrapper for the original APIRoute class.
+    We use this instead of an exception handler, because exception handlers
+    for Exception class are buggy in FastAPI.
+    """
 
     def get_route_handler(self) -> Callable:
         original_route_handler = super().get_route_handler()

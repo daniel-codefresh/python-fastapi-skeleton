@@ -8,13 +8,15 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse, RedirectResponse
 
 from python_project_skeleton.api.routes import router as api_router
+from python_project_skeleton.config import Settings
+from python_project_skeleton.helpers.helpers import fetch_message400, fetch_message500
 from python_project_skeleton.middleware.correlation_id import (
     RequestCorrelationLogMiddleware,
 )
 from python_project_skeleton.route_error_handler import RouteErrorHandler
 
 
-def get_app(settings) -> FastAPI:  # TODO: add type
+def get_app(settings: Settings) -> FastAPI:
     app = FastAPI()
 
     app.router.route_class = RouteErrorHandler
@@ -34,14 +36,6 @@ def get_app(settings) -> FastAPI:  # TODO: add type
 
     app.include_router(api_router, prefix=settings.api_v1_prefix)
 
-    @app.exception_handler(500)
-    async def ise_exception_handler(request: Request, exc: Exception):
-        logger.exception(exc)
-        return JSONResponse(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            content={"detail": "Internal server error"},
-        )
-
     @app.exception_handler(RequestValidationError)
     async def validation_exception_handler(
         request: Request, exc: RequestValidationError
@@ -54,5 +48,17 @@ def get_app(settings) -> FastAPI:  # TODO: add type
     @app.get("/", include_in_schema=False)
     def redirect_to_docs() -> RedirectResponse:
         return RedirectResponse("/docs")
+
+    @app.get("/400/")
+    async def read_400():
+        message = await fetch_message400()
+        logger.info("controller!")
+        return {"message": message}
+
+    @app.get("/500/")
+    async def read_500():
+        message = await fetch_message500()
+        logger.info("controller!")
+        return {"message": message}
 
     return app
