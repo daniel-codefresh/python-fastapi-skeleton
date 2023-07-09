@@ -11,6 +11,9 @@ authors = ["Daniel Soifer <daniel.soifer@codefresh.io>"]
 [tool.poetry.dependencies]
 python = "^3.11"
 fastapi = {extras = ["all"], version = "^0.98.0"} # to reduce image size, remove extras and install only what you need
+loguru = "^0.7.0"
+langchain = "^0.0.225"
+openai = "^0.27.8"
 
 
 [tool.poetry.group.dev.dependencies]

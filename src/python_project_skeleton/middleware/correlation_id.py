@@ -1,0 +1,48 @@
+from loguru import logger
+from contextvars import ContextVar
+from uuid import uuid4
+
+from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
+from fastapi import Request
+
+
+CORRELATION_ID_CTX_KEY: str = "correlation_id"
+REQUEST_ID_CTX_KEY: str = "request_id"
+
+_correlation_id_ctx_var: ContextVar[str] = ContextVar(
+    CORRELATION_ID_CTX_KEY, default=None
+)
+_request_id_ctx_var: ContextVar[str] = ContextVar(REQUEST_ID_CTX_KEY, default=None)
+
+
+def get_correlation_id() -> str:
+    return _correlation_id_ctx_var.get()
+
+
+def get_request_id() -> str:
+    return _request_id_ctx_var.get()
+
+
+class RequestCorrelationLogMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint):
+        correlation_id = _correlation_id_ctx_var.set(
+            request.headers.get("X-Correlation-ID", str(uuid4()))
+        )
+        request_id = _request_id_ctx_var.set(str(uuid4()))
+
+        # response = None
+        with logger.contextualize(
+            request_id=get_request_id(), correlation_id=get_correlation_id()
+        ):
+            try:
+                response = await call_next(request)
+                response.headers["X-Correlation-ID"] = get_correlation_id()
+                response.headers["X-Request-ID"] = get_request_id()
+                return response
+            # except Exception:
+            #     response = Response(...)
+            #     logger.error("Request failed")
+            finally:
+                _correlation_id_ctx_var.reset(correlation_id)
+                _request_id_ctx_var.reset(request_id)
+                # return response
