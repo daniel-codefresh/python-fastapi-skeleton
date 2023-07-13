@@ -1,7 +1,8 @@
 from .app import get_app
 from .config import get_settings
 
-from .logger.logger import init_logging
+from .helpers.logger import init_logging
+
 
 settings = get_settings()
 

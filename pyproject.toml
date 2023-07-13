@@ -3,26 +3,27 @@ name = "python-project-skeleton"
 version = "0.1.0"
 description = ""
 authors = ["Daniel Soifer <daniel.soifer@codefresh.io>"]
-#
-#[tool.poetry.scripts]
-#python-project-skeleton = "python_project_skeleton.main:app"
 
 
 [tool.poetry.dependencies]
 python = "^3.11"
-fastapi = {extras = ["all"], version = "^0.98.0"} # to reduce image size, remove extras and install only what you need
 loguru = "^0.7.0"
-langchain = "^0.0.225"
 openai = "^0.27.8"
+fastapi = "^0.100.0"
+uvicorn = {extras = ["standard"], version = "^0.22.0"}
+langchain = "~0.0.232"
 
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.2"
-black = "^23.3.0"
-ruff = "^0.0.272"
-mypy = "^1.3.0"
 pytest-cov = "^4.1.0"
 httpx = "^0.24.1"
+
+
+[tool.poetry.group.lint.dependencies]
+ruff = "^0.0.278"
+black = "^23.7.0"
+mypy = "^1.4.1"
 
 [build-system]
 requires = ["poetry-core>=1.5.1"]

@@ -18,11 +18,11 @@ _request_id_ctx_var: ContextVar[str | None] = ContextVar(
 
 
 def get_correlation_id() -> str:
-    return _correlation_id_ctx_var.get()
+    return _correlation_id_ctx_var.get() or ""
 
 
 def get_request_id() -> str:
-    return _request_id_ctx_var.get()
+    return _request_id_ctx_var.get() or ""
 
 
 class RequestCorrelationLogMiddleware(BaseHTTPMiddleware):

@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
-from loguru import logger
 from starlette import status
 from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
@@ -9,7 +8,6 @@ from starlette.responses import JSONResponse, RedirectResponse
 
 from .api.routes import router as api_router
 from .config import Settings
-from .helpers.helpers import fetch_message400, fetch_message500
 from .middleware.correlation_id import (
     RequestCorrelationLogMiddleware,
 )
@@ -48,17 +46,5 @@ def get_app(settings: Settings) -> FastAPI:
     @app.get("/", include_in_schema=False)
     def redirect_to_docs() -> RedirectResponse:
         return RedirectResponse("/docs")
-
-    @app.get("/400/")
-    async def read_400():
-        message = await fetch_message400()
-        logger.info("controller!")
-        return {"message": message}
-
-    @app.get("/500/")
-    async def read_500():
-        message = await fetch_message500()
-        logger.info("controller!")
-        return {"message": message}
 
     return app

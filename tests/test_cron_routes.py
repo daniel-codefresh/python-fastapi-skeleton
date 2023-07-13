@@ -1,8 +1,8 @@
 from fastapi.testclient import TestClient
 
-from python_project_skeleton.config import get_settings, Settings
-from python_project_skeleton.api.cron.dependencies import get_cron_expression_generator
-from python_project_skeleton.app import get_app
+from gen_ai_service.config import get_settings, Settings
+from gen_ai_service.api.cron.dependencies import get_cron_expression_generator
+from gen_ai_service.app import get_app
 
 
 def get_settings_override():
