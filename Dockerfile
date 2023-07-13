@@ -21,7 +21,7 @@ ENV PIP_NO_CACHE_DIR=off \
     POETRY_VERSION=1.5.1
 RUN pip install poetry==1.5.1
 COPY pyproject.toml poetry.lock /app/
-RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --without dev --no-interaction --no-ansi --no-root
+RUN --mount=type=cache,target=$POETRY_CACHE_DIR poetry install --only main --no-interaction --no-ansi --no-root
 
 
 FROM base as runtime
