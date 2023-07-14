@@ -11,4 +11,5 @@ repos:
         args:
           - src
           - tests
-          #        args: [--fix, --exit-non-zero-on-fix]
+          - --fix
+          - --exit-non-zero-on-fix
