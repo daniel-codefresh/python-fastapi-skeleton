@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends
-from .models import CronPrompt
-from .dependencies import get_cron_expression_generator
 
+from ...helpers.exception_handler_route import ExceptionHandlerRoute
 from ...llms.cron.cron import CronExpressionGenerator
+from .dependencies import get_cron_expression_generator
+from .models import CronPrompt
 
-
-router = APIRouter()
+router = APIRouter(route_class=ExceptionHandlerRoute)
 
 
 @router.post("/")

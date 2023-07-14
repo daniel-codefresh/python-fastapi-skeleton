@@ -1,8 +1,7 @@
 from fastapi.testclient import TestClient
-
-from gen_ai_service.config import get_settings, Settings
 from gen_ai_service.api.cron.dependencies import get_cron_expression_generator
 from gen_ai_service.app import get_app
+from gen_ai_service.config import Settings, get_settings
 
 
 def get_settings_override():

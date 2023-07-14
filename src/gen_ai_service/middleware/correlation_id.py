@@ -1,10 +1,9 @@
-from loguru import logger
 from contextvars import ContextVar
 from uuid import uuid4
 
-from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from fastapi import Request
-
+from loguru import logger
+from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 
 CORRELATION_ID_CTX_KEY: str = "correlation_id"
 REQUEST_ID_CTX_KEY: str = "request_id"

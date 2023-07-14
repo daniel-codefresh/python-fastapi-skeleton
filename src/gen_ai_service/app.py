@@ -8,16 +8,16 @@ from starlette.responses import JSONResponse, RedirectResponse
 
 from .api.routes import router as api_router
 from .config import Settings
+from .helpers.exception_handler_route import ExceptionHandlerRoute
 from .middleware.correlation_id import (
     RequestCorrelationLogMiddleware,
 )
-from .helpers.route_error_handler import RouteErrorHandler
 
 
 def get_app(settings: Settings) -> FastAPI:
     app = FastAPI()
 
-    app.router.route_class = RouteErrorHandler
+    app.router.route_class = ExceptionHandlerRoute
 
     app.add_middleware(
         CORSMiddleware,
@@ -41,6 +41,13 @@ def get_app(settings: Settings) -> FastAPI:
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content=jsonable_encoder({"detail": exc.errors(), "body": exc.body}),
+        )
+
+    @app.exception_handler(ValueError)
+    async def value_error_handler(request: Request, exc: ValueError):
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content=jsonable_encoder({"detail": exc.args[0]}),
         )
 
     @app.get("/", include_in_schema=False)
