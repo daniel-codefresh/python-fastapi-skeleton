@@ -50,6 +50,7 @@ warn_required_dynamic_aliases = true
 
 [tool.black]
 line-length = 88  # this is the default
+preview = true
 
 [tool.ruff]
 select = [

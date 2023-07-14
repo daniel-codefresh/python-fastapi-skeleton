@@ -28,9 +28,9 @@ def test_generate_cron() -> None:
 
         return MockCronExpressionGenerator(llm=None)  # type: ignore
 
-    app.dependency_overrides[
-        get_cron_expression_generator
-    ] = cron_expression_generator_override
+    app.dependency_overrides[get_cron_expression_generator] = (
+        cron_expression_generator_override
+    )
 
     response = client.post(
         f"{setting.api_v1_prefix}/cron/", json={"text": "every hour"}
