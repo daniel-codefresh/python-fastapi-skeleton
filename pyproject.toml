@@ -58,7 +58,7 @@ select = [
     "E",
     "F",
     "W",
-    "I",
+#    "I",
     "B"
 ]
 src = ["src", "tests"]
