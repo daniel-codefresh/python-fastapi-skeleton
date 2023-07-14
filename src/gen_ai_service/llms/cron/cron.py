@@ -8,7 +8,7 @@ class CronExpressionGenerator:
 
         self.prompt = PromptTemplate(
             input_variables=["cron_prompt"],
-            template="""
+            template=r"""
 Below is text describing a cron expression.
 Your goal is to:
 - Convert the text to a valid cron expression.

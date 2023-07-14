@@ -29,6 +29,25 @@ mypy = "^1.4.1"
 requires = ["poetry-core>=1.5.1"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.mypy]
+plugins = [
+    "pydantic.mypy"
+]
+show_error_context = true
+show_column_numbers = true
+ignore_missing_imports = true
+check_untyped_defs = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+warn_return_any = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+
 [tool.black]
 line-length = 88  # this is the default
 
@@ -40,6 +59,7 @@ select = [
     "I",
     "B"
 ]
+src = ["src", "tests"]
 ignore = []
 line-length = 88  # same as Black (this is the default)
 

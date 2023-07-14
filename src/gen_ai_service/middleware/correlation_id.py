@@ -4,6 +4,7 @@ from uuid import uuid4
 from fastapi import Request
 from loguru import logger
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
+from starlette.responses import Response
 
 CORRELATION_ID_CTX_KEY: str = "correlation_id"
 REQUEST_ID_CTX_KEY: str = "request_id"
@@ -25,7 +26,9 @@ def get_request_id() -> str:
 
 
 class RequestCorrelationLogMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next: RequestResponseEndpoint):
+    async def dispatch(
+        self, request: Request, call_next: RequestResponseEndpoint
+    ) -> Response:
         correlation_id = _correlation_id_ctx_var.set(
             request.headers.get("X-Correlation-ID", str(uuid4()))
         )
