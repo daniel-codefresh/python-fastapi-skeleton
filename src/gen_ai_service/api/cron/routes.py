@@ -2,12 +2,12 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
-from ...helpers.exception_handler_route import ExceptionHandlerRoutee
+from ...helpers.exception_handler_route import ExceptionHandlerRoute
 from ...llms.cron.cron import CronExpressionGenerator
 from .dependencies import get_cron_expression_generator
 from .models import CronPrompt
 
-router = APIRouter(route_class=ExceptionHandlerRoutee)
+router = APIRouter(route_class=ExceptionHandlerRoute)
 
 
 @router.post("/")
