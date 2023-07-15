@@ -28,5 +28,7 @@ Below is the text:
         )
 
     async def generate_cron_expr(self, cron_prompt: str) -> str:
-        result = await self.llm.apredict(self.prompt.format(cron_prompt=cron_prompt))
+        result: str = await self.llm.apredict(
+            self.prompt.format(cron_prompt=cron_prompt)
+        )
         return result

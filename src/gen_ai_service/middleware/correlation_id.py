@@ -6,7 +6,6 @@ from loguru import logger
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.responses import Response
 
-
 CORRELATION_ID_CTX_KEY: str = "correlation_id"
 REQUEST_ID_CTX_KEY: str = "request_id"
 
