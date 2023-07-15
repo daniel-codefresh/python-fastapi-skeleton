@@ -17,6 +17,6 @@ async def generate_cron(
         CronExpressionGenerator,
         Depends(get_cron_expression_generator),
     ],
-) -> dict:
+) -> dict[str, str]:
     result = await cron_generator.generate_cron_expr(cron_prompt.text)
     return {"result": result}

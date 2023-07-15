@@ -10,11 +10,13 @@ repos:
           - "I"  # Only run the "I" category to auto fix imports sorting
           - --fix
           - --exit-non-zero-on-fix
+
   - repo: https://github.com/python/black.git
     rev: 22.6.0
     hooks:
       - id: black
         language_version: python3.11
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.0.278
     hooks:
@@ -22,3 +24,10 @@ repos:
         args:
           - src
           - tests
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.4.1
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - pydantic==1.10.11

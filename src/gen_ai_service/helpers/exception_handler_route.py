@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Any, Callable, Coroutine
 
 from fastapi import HTTPException
 from fastapi.exceptions import RequestValidationError
@@ -16,7 +16,7 @@ class ExceptionHandlerRoute(APIRoute):
     for Exception class are buggy in FastAPI and mess up middleware execution order.
     """
 
-    def get_route_handler(self) -> Callable:
+    def get_route_handler(self) -> Callable[[Request], Coroutine[Any, Any, Response]]:
         original_route_handler = super().get_route_handler()
 
         async def custom_route_handler(request: Request) -> Response:
