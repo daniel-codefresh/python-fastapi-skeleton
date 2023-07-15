@@ -19,7 +19,7 @@ client = TestClient(app)
 
 
 def test_generate_cron() -> None:
-    mock_cron_expression: str = "0 * * * *"
+    mock_cron_expression: str = "* * * * *"
 
     def cron_expression_generator_override() -> CronExpressionGenerator:
         class MockCronExpressionGenerator(CronExpressionGenerator):
