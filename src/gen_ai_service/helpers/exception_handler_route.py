@@ -8,7 +8,7 @@ from starlette.requests import Request
 from starlette.responses import Response
 
 
-class ExceptionHandlerRoute(APIRoute):
+class ExceptionHandlerRoutee(APIRoute):
     """
     Custom APIRoute that handles application errors and exceptions.
     This is a wrapper for the original APIRoute class.

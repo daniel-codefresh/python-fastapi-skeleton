@@ -8,7 +8,7 @@ from starlette.responses import JSONResponse, RedirectResponse
 
 from .api.routes import router as api_router
 from .config import Settings
-from .helpers.exception_handler_route import ExceptionHandlerRoute
+from .helpers.exception_handler_route import ExceptionHandlerRoutee
 from .middleware.correlation_id import (
     RequestCorrelationLogMiddleware,
 )
@@ -17,7 +17,7 @@ from .middleware.correlation_id import (
 def get_app(settings: Settings) -> FastAPI:
     app = FastAPI()
 
-    app.router.route_class = ExceptionHandlerRoute
+    app.router.route_class = ExceptionHandlerRoutee
 
     app.add_middleware(
         CORSMiddleware,
